@@ -26,6 +26,7 @@ def is_prime(a:int) -> bool:
 	elif a < 2 or a%2 == 0:
 		return False
 
+	# step by 2, don't need to check even numbers
 	for i in range(3, math.floor(math.sqrt(a))+1, 2):
 		if a%i == 0:
 			return False
@@ -39,18 +40,25 @@ def prime_factors(a:int) -> List[int]:
 	Returns the prime factors of a number.
 	
 	Parameters:
-
+		a (int): the number to return the prime factors of
 
 	Returns:
-		(list[int]): a list of the prime factors of a
+		(list[int]): an unsorted list of the prime factors of a
 
 	"""
 
+	# prime numbers only have itself as a prime factor
+	if is_prime(a):
+		return [a]
+
 	pfs = []
-	for i in range(1, a+1):
-		f = a%i
-		if a%8 == 0 and is_prime(i):
-			pfs.append(i)
+	for i in range(1, math.floor(math.sqrt(a))+1):
+		if a%i == 0:
+			if is_prime(i): 
+				pfs.append(i)
+			other = a//i
+			if is_prime(other): 
+				pfs.append(other)
 
 	return pfs
 
