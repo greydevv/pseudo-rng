@@ -3,15 +3,21 @@
 
 ### Contents
 * [Introduction]()
+* [Why Pseudorandom?]()
 * [Randomness in Computers]()
 * [Linear Congruential Generator (LCG)]()
-* [Truly Random Numbers]()
 
 
 
 ### Introduction
 
-In this GitHub repository I aim to investigate pseudorandom number generation (PRNG) and write my findings and research here. Multiple directories in this repository are included, all of which contain Python code relating to my investigation into PRNG.
+Within this repository, the `prng` package includes a multitude of functions that allow the user to play around and experiment with pseudorandom number generation (PRNG). In this README I aim to investigate the theory and method behind PRNG as well as record my findings and research here. 
+
+
+
+### Why Pseudorandom?
+
+Pseudorandom numbers have many applications not only in the world of computer science but also in all of technology. The importance of PRNG is that a sequence of pseudorandom numbers is able to be reproduced, number for number. This is important in debugging computer programs and applications that rely on or deal with random numbers. For example, simulations like the Monte Carlo simulation need random numbers if they are to, well, *simulate*. A very interesting application that can be found on the Monte Carlo [*Wikipedia*](https://en.wikipedia.org/wiki/Monte_Carlo_method) page gives an example of how to calculate π using random numbers. Video games, casinos, and the shuffle feature on Spotify or Apple Music are just some of many applications of pseudorandom numbers. In fact, *all* of today's machine learning models are initialized with random weights so that the model is able to *break the symmetry* and take different paths (essential in gradient descent).
 
 
 
@@ -25,22 +31,24 @@ In other words, a random number simply cannot be created via an arithmetic metho
 
 Computers, however, are able to *receive* truly random data via an external, non-deterministic method. For example, using a Geiger Counter to measure radioactive activity will provide truly random results. 
 
+
+
 ### Linear Congruential Generator (LCG)
 
 [*Wikipedia*](https://en.wikipedia.org/wiki/Linear_congruential_generator)
 
-A *Linear Congruential Generator (LCG)* is an algorithm designed to produce pseudorandom numbers. LCGs take in four parameters:
+A *Linear Congruential Generator (LCG)* is an algorithm designed to produce pseudorandom numbers. An LCG takes in four parameters:
 
 1. `m` - modulus
 2. `a` - multiplier
 3. `c` - increment
 4. `n` - seed
 
-LCG's depend heavily on "good" parameter choice to produce a long period.
+LCGs depend heavily on "good" parameter choice to produce a long period.
 
 A natural question at this point would be...
 
-> *Well, if the quality of the LCG depends on combinations of parameters, how should we chooose the parameters?*
+> *Well, if the quality of the LCG depends on combinations of parameters, how should we choose the parameters?*
 
 According to [*Wikipedia*](https://en.wikipedia.org/wiki/Linear_congruential_generator), there are three main paths to take for LCG parameter choices:
 
@@ -88,16 +96,16 @@ For further examples, the `evaluate_period` utility method is used to return the
 <ins>**Example**</ins>
 ```python
 >>> prng = lcg(
-        m=2**8, # m is a power of 2
-        a=163,  # a (mod m), or a%m, is 3
+        m=2**16,
+        a=524291,
         c=0,
-        n=13,
+        n=48923,
     )
 
 >>> evaluate_period(prng)
-64
+65536
 ```
-Above, the modulus is a power of 2 (256). `a` is also 163, which satisfies the condition that `a` mod 8 is either 3 or 5 (it's 3).
+Above the modulus is a power of 2 (`2**16` evaluates to 65536). The multiplier, `a`, mod `m` (`a % m`) evaluates to 3, which also satisfies the constraints. Finally, `c` is zero, and the initial state (`n`) is an odd number.
 
 ---
 
@@ -114,36 +122,22 @@ Above, the modulus is a power of 2 (256). `a` is also 163, which satisfies the c
 <ins>**Example**</ins>
 ```python
 >>> prng = lcg(
-        m=8,
-        a=21,
-        c=5,
-        n=20,
+        m=2**16, # 65536
+        a=14285,
+        c=3091,
+        n=948,
     )
 
 >>> evaluate_period(prng)
-8
+65536
 ```
-
-This path of parameter choice is a little bit more restrictive than the other common paths. For that, two methods are defined in this repository for testing:
+This is referred to as the *Hull-Dobell Theorem* and provides a parameter structure to achieve a maximal period of `m`. Two methods are defined in this repository for playing around with some of these parameters.
 ```python
-# m and c are relatively prime
->>> relatively_prime(8, 5)
+# 1.  m and c are relatively prime
+>>> relatively_prime(2**16, 3091)
 True
 
->>> relatively_prime(25, 168)
-True
+# 2.  a - 1 is divisible by all prime factors of m
+>>> prime_factors(2**16)
+[2]
 ```
-```python
-# a - 1 is divisible by all prime factors of m
->>> pfactors = prime_factors(8)
-
-```
-```python
-# a - 1 is divisible by 4 if m is divisible by 4
-
-```
-
-
-### Truly Random Numbers
-
-It has already been established that computers cannot create true random numbers; however, they can still *receive* them. A Geiger counter, a device that measures radioactive activity, *will* produce truly random numbers. Contrary to popular belief, something like a dice roll is *not* truly random. This is because it is still bounded by the laws of physics, and therefore could be predicted. 
