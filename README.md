@@ -103,9 +103,9 @@ For further examples, the `evaluate_period` utility method is used to return the
     )
 
 >>> evaluate_period(prng)
-65536
+16384
 ```
-Above the modulus is a power of 2 (`2**16` evaluates to 65536). The multiplier, `a`, mod `m` (`a % m`) evaluates to 3, which also satisfies the constraints. Finally, `c` is zero, and the initial state (`n`) is an odd number.
+Above the modulus is a power of 2 (`2**16` evaluates to 65536). The multiplier, `a`, mod `m` (`a % m`) evaluates to 3, which also satisfies the constraints. Finally, `c` is zero, and the initial state (`n`) is an odd number. The parameter choices here result in a period of 16384, which is, in fact, one fourth of the modulus.
 
 ---
 
