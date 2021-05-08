@@ -1,0 +1,9 @@
+graft tests
+prune tests/.pytest_cache
+
+graft prng
+
+include LICENSE
+
+global-exclude *.py[cod]
+global-exclude .DS_Store
