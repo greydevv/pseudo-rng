@@ -3,10 +3,10 @@
 
 
 ### Contents
-* [Introduction]()
-* [Why Pseudorandom?]()
-* [Randomness in Computers]()
-* [Linear Congruential Generator (LCG)]()
+* [Introduction](https://github.com/greysonDEV/pseudo-rng#introduction)
+* [Why Pseudorandom?](https://github.com/greysonDEV/pseudo-rng#why-pseudorandom)
+* [Randomness in Computers](https://github.com/greysonDEV/pseudo-rng#randomness-in-computers)
+* [Linear Congruential Generator (LCG)](https://github.com/greysonDEV/pseudo-rng#linear-congruential-generator-lcg)
 
 
 
