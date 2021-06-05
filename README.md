@@ -1,6 +1,7 @@
 # Pseudorandom Number Generation
 
 
+
 ### Contents
 * [Introduction]()
 * [Why Pseudorandom?]()
@@ -23,7 +24,7 @@ Pseudorandom numbers have many applications not only in the world of computer sc
 
 ### Randomness in Computers
 
-Computers are *deterministic* systems. In short, deterministic simply just means that the output of an algorithm is determined only by the inputs into that function. Computers are non-biased machines, always following a set of instructions to provide an output from some input. Because of this, computers themselves cannot create *truly* random numbers. Mathematician [*John von Neumann*](https://en.wikipedia.org/wiki/John_von_Neumann) once said:
+Computers are *deterministic* systems. In short, deterministic simply just means that the output of an algorithm is determined only by the inputs into that function. Computers are non-biased machines - they always follow a set of instructions to provide an output from some input. Because of this, computers themselves cannot create *truly* random numbers. Mathematician [*John von Neumann*](https://en.wikipedia.org/wiki/John_von_Neumann) once said:
 
 > *Anyone who considers arithmetical methods of producing random digits is, of course, in a state of sin.*
 
@@ -35,9 +36,17 @@ Computers, however, are able to *receive* truly random data via an external, non
 
 ### Linear Congruential Generator (LCG)
 
-[*Wikipedia*](https://en.wikipedia.org/wiki/Linear_congruential_generator)
+*Source:* [*Wikipedia*](https://en.wikipedia.org/wiki/Linear_congruential_generator)
 
-A *Linear Congruential Generator (LCG)* is an algorithm designed to produce pseudorandom numbers. An LCG takes in four parameters:
+After reading, consider taking a look at the linked article as this section barely scrapes the surface. 
+
+A *Linear Congruential Generator (LCG)* is an algorithm designed to produce pseudorandom numbers. To find the *nth* term in any linear congruential series:
+
+> *X*<sub>*n+1*</sub> = (*aX*<sub>*n*</sub> + *c*)<sub></sub> (*mod m*)
+
+
+
+There are four parameters that are passed to an LCG:
 
 1. `m` - modulus
 2. `a` - multiplier
@@ -54,24 +63,25 @@ According to [*Wikipedia*](https://en.wikipedia.org/wiki/Linear_congruential_gen
 
 ---
 
-#### `m is prime, c = 0`
-> *The period is **m−1** if the multiplier a is chosen to be a primitive element of the integers modulo **m**. The initial state must be chosen between **1** and **m−1**.*
+#### 1) `m is prime, c = 0`
+
+> *The period is **m−1** if the; multiplier a is chosen to be a primitive element of the integers modulo **m**. The initial state must be chosen between **1** and **m−1**.*
 
 <ins>**Example**</ins>
 ```python
->>> m = 263
+>>> m = 751
 >>> prng = lcg(
         m=m,
-        a=158,
+        a=577,
         c=0,
-        n=3,
+        n=331,
 
     )
 
->>> seq = [next(prng) for _ in range(m-1)] # length of 262
-[211, 200, 40, 8, ..., 75, 15, 3]
+>>> seq = [next(prng) for _ in range(m-1)] # length of 750
+[233, 12, 165, ..., 431, 106, 331]
 ```
-If you haven't guessed already, the period *is* going to be `m-1 = 263-1 = 262`. This means that if we call `next` on `prng` a few more times, the repetition becomes obvious:
+If you haven't guessed already, the period is going to be `m-1 = 751-1 = 750`. This means that if `next` is called on `prng` a few more times, the repetition becomes apparent:
 ```python
 >>> next(prng)
 211
@@ -90,8 +100,9 @@ A value for `a` can be achieved with the `primitive_roots()` utility method by p
 For further examples, the `evaluate_period` utility method is used to return the LCG's period length. Although `evaluate_period()` provides a shortcut for finding the period, the simple, more visual process above may still be utilized.
 
 ---
-#### `m is a power of 2, c = 0`
-> *This form has maximal period m/4, achieved if a ≡ 3 or a ≡ 5 (mod 8). The initial state X0 must be odd...*
+#### 2) `m is a power of 2, c = 0`
+
+> *This form has maximal period **m/4**, achieved if **a ≡ 3** or **a ≡ 5** (**mod 8**). The initial state **X**<sub>**0**</sub> must be odd...*
 
 <ins>**Example**</ins>
 ```python
@@ -109,8 +120,9 @@ Above the modulus is a power of 2 (`2**16` evaluates to 65536). The multiplier, 
 
 ---
 
-#### `c ≠ 0`
-> *When c ≠ 0, correctly chosen parameters allow a period equal to m, for all seed values.*
+#### 3) `c ≠ 0`
+
+> *When **c ≠ 0**, correctly chosen parameters allow a period equal to **m**, for all seed values.*
 
 "Correctly chosen parameters," as stated in the [*Wikipedia*](https://en.wikipedia.org/wiki/Linear_congruential_generator) article, means that:
 ```
@@ -118,6 +130,7 @@ Above the modulus is a power of 2 (`2**16` evaluates to 65536). The multiplier, 
 2.  a - 1 is divisible by all prime factors of m
 3.  a - 1 is divisible by 4 if m is divisible by 4
 ```
+Note that the third condition does not have to be met. It simply states that *if* `m` is divisible by 4, `a-1` must be as well.
 
 <ins>**Example**</ins>
 ```python
@@ -141,3 +154,5 @@ True
 >>> prime_factors(2**16)
 [2]
 ```
+
+---
