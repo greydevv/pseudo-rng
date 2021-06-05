@@ -106,6 +106,8 @@ def primitive_roots(a:int) -> List[int]:
 
 	return roots
 
+
+
 def evaluate_period(prng:Generator[int, None, None]) -> int:
 	seq = []
 	while True:
@@ -117,3 +119,6 @@ def evaluate_period(prng:Generator[int, None, None]) -> int:
 		else:
 			seq.append(ele)
 	return len(seq)
+
+
+
