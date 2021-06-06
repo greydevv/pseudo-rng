@@ -1,7 +1,7 @@
 from prng.util.util import is_prime
 import pytest
 
-def test_is_prime():
+def test_is_prime_primes():
 	try:
 		# file with primes < 2,000
 		with open("prime_nums_2k.txt") as f:
