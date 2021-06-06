@@ -102,7 +102,9 @@ def evaluate_period(prng:Generator[int, None, None]) -> int:
     """
     Warning: This method is untested and used only for demonstration 
     purposes in the GitHub repository.
+
     """
+
     seq = []
     while True:
         ele = next(prng)
