@@ -84,13 +84,13 @@ According to [*Wikipedia*](https://en.wikipedia.org/wiki/Linear_congruential_gen
 If you haven't guessed already, the period is going to be `m-1 = 751-1 = 750`. This means that if `next` is called on `prng` a few more times, the repetition becomes apparent:
 ```python
 >>> next(prng)
-211
+233
 
 >>> next(prng)
-200
+12
 
 >>> next(prng)
-40
+165
 ```
 A value for `a` can be achieved with the `primitive_roots()` utility method by passing in `m` (the example above chose 158 for `a`, which is a primitive root of `m`):
 ```python
